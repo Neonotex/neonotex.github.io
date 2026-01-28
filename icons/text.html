@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Neonote</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>NEONOTE</h1>
+    <input id="searchInput" type="text" placeholder="Search client name…" />
+  </header>
+
+  <main id="overview">
+    <div id="todayContainer"></div>
+  </main>
+
+  <button id="addBtn" class="floating-btn">＋</button>
+
+
+  <div id="promiseModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Add / Move Promise</h2>
+      <input id="clientName" type="text" placeholder="Client Name" />
+      <input id="promiseDate" type="date" />
+      <textarea id="description" placeholder="Description / Reason"></textarea>
+      <button id="savePromise">Save Promise</button>
+      <button id="closeModal" class="secondary">Cancel</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
