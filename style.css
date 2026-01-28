@@ -81,6 +81,17 @@ body {
   width: 20px;
   height: 20px;
   border: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--red);
+  cursor: pointer;
+}
+
+.checkbox::before {
+  content: "✕";
+  line-height: 1;
 }
 
 .floating-btn {
