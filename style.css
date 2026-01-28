@@ -1,0 +1,147 @@
+:root {
+  --bg: #0a0a0a;
+  --light: #f5f5f5;
+  --red: #ff3b3b;
+  --green: #00ff9c;
+  --base-font: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Courier New", monospace;
+  image-rendering: pixelated; 
+  -webkit-font-smoothing: none; 
+  -moz-osx-font-smoothing: grayscale; 
+}
+
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--light);
+  font-family: "Courier New", monospace;
+  font-size: var(--base-font);
+}
+
+.app-header {
+  padding: 12px;
+  background: #111;
+  border-bottom: 4px solid var(--green);
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  margin: 0 0 8px 0;
+  color: var(--green);
+}
+
+.app-header input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid var(--red);
+  background: #000;
+  color: var(--light);
+  font-size: 1.2rem;
+}
+
+#overview {
+  padding: 12px;
+}
+
+.promise {
+  border: 2px solid var(--green);
+  margin-bottom: 8px;
+  padding: 8px;
+  font-size: 1.2rem;
+}
+
+.promise.done {
+  display: none;
+}
+
+.promise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.promise-details {
+  display: none;
+  margin-top: 8px;
+  border-top: 2px dashed var(--red);
+  padding-top: 8px;
+}
+
+.promise.show .promise-details {
+  display: block;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--red);
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  background: var(--green);
+  color: #000;
+  border: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #000;
+  border: 4px solid var(--green);
+  padding: 16px;
+  width: 90%;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #111;
+  color: var(--light);
+  border: 2px solid var(--red);
+  font-size: 1.2rem;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 6px;
+  background: var(--green);
+  border: none;
+  font-size: 1.2rem;
+}
+
+button.secondary {
+  background: var(--red);
+  color: #000;
+}
+
+.promise.done-visible {
+  opacity: 0.4;
+  filter: grayscale(100%);
+  border-style: dashed;
+}
