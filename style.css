@@ -210,6 +210,8 @@ button.secondary {
   outline: 2px solid #000;
   outline-offset: -6px;
   padding: 8px;
+  min-height: calc((100vh - 160px) * 0.95);
+  max-height: calc(100vh - 160px);
   overflow-y: auto;
   background: #154c45;
   border-radius: 8px; 
@@ -362,17 +364,3 @@ button.secondary {
   text-shadow: 1px 1px 0 #000;
 }
 
-#floatingBtnsWrapper {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  display: flex;
-  gap: 8px;
-  z-index: 10;
-}
-
-#floatingBtnsWrapper .floating-btn {
-  position: relative;
-  bottom: 0; 
-  right: 0;
-}

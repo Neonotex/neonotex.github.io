@@ -387,25 +387,6 @@ if (isAppInstalled()) {
 
 render();
 
-function adjustPromiseSectionHeight() {
-  const promiseSection = document.getElementById('promiseSection');
-  const floatingWrapper = document.getElementById('floatingBtnsWrapper');
-  const installBanner = document.getElementById('installBanner');
-
-  const padding = 16;
-  const bannerHeight = installBanner.classList.contains('hidden') ? 0 : installBanner.offsetHeight + padding;
-
-  const wrapperRect = floatingWrapper.getBoundingClientRect();
-  const safeMaxHeight = wrapperRect.top - padding - bannerHeight;
-
-  promiseSection.style.maxHeight = safeMaxHeight + 'px';
-  promiseSection.style.minHeight = (safeMaxHeight * 0.95) + 'px';
-}
-
-
-adjustPromiseSectionHeight();
-window.addEventListener('resize', adjustPromiseSectionHeight);
-window.addEventListener('orientationchange', adjustPromiseSectionHeight);
 
 function enforceDoneLimit() {
   const doneIndexes = promises
