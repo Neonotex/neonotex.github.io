@@ -15,6 +15,12 @@ document.querySelectorAll('.tab').forEach(tab => {
 const todayContainer = document.getElementById('todayContainer');
 const modal = document.getElementById('promiseModal');
 const addBtn = document.getElementById('addBtn');
+const backupModal = document.getElementById('backupModal');
+const backupOpenBtn = document.getElementById('backupOpenBtn');
+const closeBackupModal = document.getElementById('closeBackupModal');
+const exportBackup = document.getElementById('exportBackup');
+const importBackup = document.getElementById('importBackup');
+const importFile = document.getElementById('importFile');
 const saveBtn = document.getElementById('savePromise');
 const closeModal = document.getElementById('closeModal');
 const searchInput = document.getElementById('searchInput');
@@ -44,6 +50,30 @@ function today() {
   return `${year}-${month}-${day}`;
 }
 
+async function getKey(password, salt) {
+  const enc = new TextEncoder();
+
+  const baseKey = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(password),
+    'PBKDF2',
+    false,
+    ['deriveKey']
+  );
+
+  return crypto.subtle.deriveKey(
+    {
+      name: 'PBKDF2',
+      salt,
+      iterations: 100000,
+      hash: 'SHA-256'
+    },
+    baseKey,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+}
 
 function render(list = promises, mode = currentTab) {
   todayContainer.innerHTML = '';
@@ -145,6 +175,80 @@ function save() {
 
 addBtn.onclick = () => openModal();
 closeModal.onclick = close;
+
+backupOpenBtn.onclick = () => {
+  backupModal.classList.remove('hidden');
+};
+
+closeBackupModal.onclick = () => {
+  backupModal.classList.add('hidden');
+};
+
+exportBackup.onclick = async () => {
+  const password = prompt('Set a backup password');
+  if (!password) return;
+
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await getKey(password, salt);
+
+  const payload = JSON.stringify({
+    version: 1,
+    created: Date.now(),
+    promises
+  });
+
+  const encrypted = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    key,
+    new TextEncoder().encode(payload)
+  );
+
+  const blob = new Blob([salt, iv, new Uint8Array(encrypted)]);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'neonotex-backup.neonotex';
+  a.click();
+};
+
+importBackup.onclick = () => importFile.click();
+
+importFile.onchange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const password = prompt('Enter backup password');
+  if (!password) return;
+
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+
+  const salt = bytes.slice(0, 16);
+  const iv = bytes.slice(16, 28);
+  const data = bytes.slice(28);
+
+  try {
+    const key = await getKey(password, salt);
+    const decrypted = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      data
+    );
+
+    const parsed = JSON.parse(
+      new TextDecoder().decode(decrypted)
+    );
+
+    promises = parsed.promises || [];
+    save();
+    render();
+    backupModal.classList.add('hidden');
+    alert('Backup restored successfully');
+  } catch {
+    alert('Invalid password or corrupted backup');
+  }
+};
+
 
 saveBtn.onclick = () => {
   const existing = editIndex !== null ? promises[editIndex] : null;

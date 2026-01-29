@@ -126,6 +126,11 @@ button,
 .tab {
   transition: transform 0.1s ease;
 }
+.backup-btn {
+  right: 88px; 
+  background: #00ff9c;
+  color: #000;
+}
 
 
 .modal {

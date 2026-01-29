@@ -40,7 +40,7 @@
 
 
   <header class="app-header">
-    <h1>NeonoteX-test</h1>
+    <h1>NeonoteX</h1>
 <div class="search-wrapper">
   <input id="searchInput" type="text" placeholder="Search client name…" />
   <button id="clearSearch" title="Clear">✕</button>
@@ -60,6 +60,7 @@
 </main>
 
 <button id="homeBtn" class="floating-btn home-btn">🏠</button>
+<button id="backupOpenBtn" class="floating-btn backup-btn">💾</button>
 <button id="addBtn" class="floating-btn">＋</button>
 
   <div id="promiseModal" class="modal hidden">
@@ -72,6 +73,20 @@
       <button id="closeModal" class="secondary">Cancel</button>
     </div>
   </div>
+  
+  <div id="backupModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Backup & Restore</h2>
+
+    <button id="exportBackup">💾 Export Backup</button>
+    <button id="importBackup">📂 Restore Backup</button>
+
+    <input id="importFile" type="file" accept=".neonotex" hidden>
+
+    <button id="closeBackupModal" class="secondary">Close</button>
+  </div>
+</div>
+
 
   <script src="app.js"></script>
 </body>
