@@ -56,6 +56,7 @@ body {
   padding: 8px;
   font-size: 1.2rem;
   background: #000; 
+  border-radius: 5px;
 }
 
 .promise.done {
@@ -201,9 +202,11 @@ button.secondary {
 #promiseSection {
   border: 4px solid var(--green);
   padding: 8px;
+  min-height: 400px;
   max-height: calc(100vh - 220px);
   overflow-y: auto;
   background: #154c45;
+  border-radius: 8px; 
 }
 
 #promiseSection::-webkit-scrollbar {
@@ -229,14 +232,16 @@ button.secondary {
 .tab {
   flex: 1;
   padding: 8px;
-  background: #000;
+  background: #cc9503;
   border: 2px solid var(--red);
   color: var(--light);
   font-size: 1rem;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .tab.active {
+  background: var(--green);
   border-color: var(--green);
   color: var(--green);
 }
