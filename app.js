@@ -61,7 +61,8 @@ function render(list = promises, mode = currentTab) {
   }
 
   if (!items.length) {
-    todayContainer.innerHTML = '<p>Wala kay promise karon Dong! Pag trabaho intawon!</p>';
+    todayContainer.innerHTML =
+  '<p class="empty-state">Wala kay promise karon Dong! Pag trabaho intawon!</p>';
     return;
   }
 

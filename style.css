@@ -113,6 +113,7 @@ body {
   background: var(--green);
   color: #000;
   border: none;
+  border-radius: 5px;
 }
 
 button:active,
@@ -202,7 +203,7 @@ button.secondary {
 #promiseSection {
   border: 4px solid var(--green);
   padding: 8px;
-  min-height: 400px;
+  min-height: 600px;
   max-height: calc(100vh - 220px);
   overflow-y: auto;
   background: #154c45;
@@ -243,7 +244,8 @@ button.secondary {
 .tab.active {
   background: var(--green);
   border-color: var(--green);
-  color: var(--green);
+  color: var(--red);
+  font-weight: bold;
 }
 
 .install-banner {
@@ -270,4 +272,15 @@ button.secondary {
 
 .hidden {
   display: none;
+}
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--light);
+  font-size: 1.2rem;
+  opacity: 0.8;
 }
