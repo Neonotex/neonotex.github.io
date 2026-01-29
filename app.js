@@ -387,6 +387,25 @@ if (isAppInstalled()) {
 
 render();
 
+function adjustPromiseSectionHeight() {
+  const promiseSection = document.getElementById('promiseSection');
+  const floatingBtns = document.querySelectorAll('.floating-btn');
+  
+  let minBtnTop = Infinity;
+  floatingBtns.forEach(btn => {
+    const rect = btn.getBoundingClientRect();
+    if (rect.top < minBtnTop) minBtnTop = rect.top;
+  });
+
+  const safeMaxHeight = minBtnTop - 16; 
+  promiseSection.style.maxHeight = safeMaxHeight + 'px';
+  promiseSection.style.minHeight = safeMaxHeight * 0.95 + 'px';
+}
+adjustPromiseSectionHeight();
+window.addEventListener('resize', adjustPromiseSectionHeight);
+window.addEventListener('orientationchange', adjustPromiseSectionHeight);
+
+
 function enforceDoneLimit() {
   const doneIndexes = promises
     .map((p, i) => (p.done ? i : -1))

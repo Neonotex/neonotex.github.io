@@ -210,13 +210,19 @@ button.secondary {
   outline: 2px solid #000;
   outline-offset: -6px;
   padding: 8px;
-  min-height: 520px;
-  max-height: 530px;
   overflow-y: auto;
   background: #154c45;
   border-radius: 8px; 
   position: relative;
 }
+
+@media (max-height: 500px) {
+  #promiseSection {
+    max-height: calc(100vh - 120px);
+    min-height: calc((100vh - 120px) * 0.95);
+  }
+}
+
 
 #promiseSection::-webkit-scrollbar {
   width: 10px;
