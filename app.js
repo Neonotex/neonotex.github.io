@@ -59,8 +59,122 @@ const homeBtn = document.getElementById('homeBtn');
 const helpBtn = document.getElementById('helpBtn');
 const helpModal = document.getElementById('helpModal');
 const closeHelpModal = document.getElementById('closeHelpModal');
-
+const PASSWORD_ENABLED_KEY = 'neonote_password_enabled';
+const PASSWORD_HASH_KEY = 'neonote_password_hash';
 const MAX_DONE = 15;
+
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+
+let passwordEnabled = localStorage.getItem(PASSWORD_ENABLED_KEY) === 'true';
+
+function updatePasswordToggleUI() {
+  togglePasswordBtn.textContent = passwordEnabled ? 'ON' : 'OFF';
+}
+
+settingsBtn.onclick = () => {
+  updatePasswordToggleUI();
+  settingsModal.classList.remove('hidden');
+};
+
+closeSettingsBtn.onclick = () => {
+  settingsModal.classList.add('hidden');
+};
+
+togglePasswordBtn.onclick = () => {
+  if (!passwordEnabled) {
+    passwordModalTitle.textContent = 'Create App Password';
+    passwordInput.value = '';
+    passwordModal.classList.remove('hidden');
+
+    passwordConfirmBtn.onclick = async () => {
+      const pw = passwordInput.value.trim();
+      if (pw.length < 4) {
+        showNotification('Password must be at least 4 characters');
+        return;
+      }
+
+      const hash = await crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(pw)
+      );
+
+      localStorage.setItem(
+        PASSWORD_HASH_KEY,
+        Array.from(new Uint8Array(hash)).join(',')
+      );
+      localStorage.setItem(PASSWORD_ENABLED_KEY, 'true');
+
+      passwordEnabled = true;
+      updatePasswordToggleUI();
+      passwordModal.classList.add('hidden');
+      showNotification('Password protection enabled');
+    };
+
+  } else {
+    passwordModalTitle.textContent = 'Enter Password';
+    passwordInput.value = '';
+    passwordModal.classList.remove('hidden');
+
+    passwordConfirmBtn.onclick = async () => {
+      const pw = passwordInput.value.trim();
+      const stored = localStorage.getItem(PASSWORD_HASH_KEY);
+      if (!stored) return;
+
+      const hash = await crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(pw)
+      );
+
+      const inputHash = Array.from(new Uint8Array(hash)).join(',');
+
+      if (inputHash !== stored) {
+        showNotification('Incorrect password');
+        return;
+      }
+
+      localStorage.setItem(PASSWORD_ENABLED_KEY, 'false');
+      passwordEnabled = false;
+      updatePasswordToggleUI();
+      passwordModal.classList.add('hidden');
+      showNotification('Password protection disabled');
+    };
+  }
+};
+
+const appPasswordEnabled = localStorage.getItem(PASSWORD_ENABLED_KEY) === 'true';
+
+if (appPasswordEnabled) {
+  passwordModalTitle.textContent = 'Unlock NeonoteX';
+  passwordInput.value = '';
+  passwordModal.classList.remove('hidden');
+
+  passwordConfirmBtn.onclick = async () => {
+    const pw = passwordInput.value.trim();
+    const stored = localStorage.getItem(PASSWORD_HASH_KEY);
+    if (!stored) return;
+
+    const hash = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(pw)
+    );
+
+    const inputHash = Array.from(new Uint8Array(hash)).join(',');
+
+    if (inputHash !== stored) {
+      showNotification('Wrong password');
+      return;
+    }
+
+    passwordModal.classList.add('hidden');
+  };
+
+  passwordCancelBtn.onclick = () => {
+    location.reload(); // prevents access
+  };
+}
 
 
 let searchClearTimer = null;
@@ -733,6 +847,7 @@ hideBtn.onclick = () => {
     hideBtn.textContent = '❯'; 
   }
 };
+
 
 
 if ('serviceWorker' in navigator) {
