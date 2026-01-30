@@ -60,7 +60,7 @@ const helpBtn = document.getElementById('helpBtn');
 const helpModal = document.getElementById('helpModal');
 const closeHelpModal = document.getElementById('closeHelpModal');
 
-const MAX_DONE = 50;
+const MAX_DONE = 15;
 
 
 let searchClearTimer = null;
