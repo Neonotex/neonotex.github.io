@@ -399,15 +399,16 @@ button.secondary {
   flex-direction: column;
   width: 90%;
   max-width: 320px;
-  min-height: 395px;
-  max-height: 400px;
+  height: 400px;
   padding: 16px;
+  box-sizing: border-box;
 }
 
 .accounts-header {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex-shrink: 0;
   position: sticky;
   top: 0;
   background: var(--bg);
