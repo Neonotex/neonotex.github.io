@@ -292,7 +292,6 @@ function renderAccountsList() {
       </div>
     `;
 
-    // OPEN ACCOUNT OPTIONS
     div.onclick = () => {
       currentAccountId = acc.id;
       document.getElementById('accountOptionsTitle').textContent = acc.name;
@@ -300,14 +299,14 @@ function renderAccountsList() {
       accountOptionsModal.classList.remove('hidden');
     };
 
-    // DELETE ACCOUNT
     div.querySelector('.account-delete').onclick = e => {
       e.stopPropagation();
-      if (confirm('Delete this account and all its clients?')) {
-        accounts = accounts.filter(a => a.id !== acc.id);
-        localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
-        renderAccountsList();
-      }
+      showConfirm('Delete this account and all its clients?', () => {
+  accounts = accounts.filter(a => a.id !== acc.id);
+  localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
+  renderAccountsList();
+});
+
     };
 
     accountsList.appendChild(div);
@@ -417,14 +416,39 @@ passwordCancelBtn.onclick = () => {
 const notificationModal = document.getElementById('notificationModal');
 const notificationText = document.getElementById('notificationText');
 const notificationCloseBtn = document.getElementById('notificationCloseBtn');
+const confirmModal = document.getElementById('confirmModal');
+const confirmText = document.getElementById('confirmText');
+const confirmYes = document.getElementById('confirmYes');
+const confirmNo = document.getElementById('confirmNo');
+
+let confirmAction = null;
+
 
 function showNotification(message) {
   notificationText.textContent = message;
   notificationModal.classList.remove('hidden');
 }
 
+function showConfirm(message, action) {
+  confirmText.textContent = message;
+  confirmAction = action;
+  confirmModal.classList.remove('hidden');
+}
+
+
 notificationCloseBtn.onclick = () => {
   notificationModal.classList.add('hidden');
+};
+
+confirmYes.onclick = () => {
+  if (confirmAction) confirmAction();
+  confirmModal.classList.add('hidden');
+  confirmAction = null;
+};
+
+confirmNo.onclick = () => {
+  confirmModal.classList.add('hidden');
+  confirmAction = null;
 };
 
 
@@ -456,26 +480,61 @@ saveBtn.onclick = () => {
 
 searchInput.oninput = () => {
   const q = searchInput.value.toLowerCase();
-
   if (searchClearTimer) clearTimeout(searchClearTimer);
 
   if (!q) {
-    render();
+    currentTab === 'account'
+      ? renderAccount(currentAccountId)
+      : render();
     return;
   }
 
-  const res = promises.filter(p =>
-    p.name.toLowerCase().includes(q)
-  );
+  if (currentTab === 'account') {
+    const acc = accounts.find(a => a.id === currentAccountId);
+    if (!acc) return;
 
-  render(res, currentTab);
+    const filtered = acc.clients.filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+
+    todayContainer.innerHTML = '';
+    if (!filtered.length) {
+      todayContainer.innerHTML =
+        '<p class="empty-state">No matching clients</p>';
+      return;
+    }
+
+    filtered.forEach(client => {
+      const div = document.createElement('div');
+      div.className = 'promise';
+      div.innerHTML = `
+        <div class="promise-header">
+          <strong>${client.name}</strong>
+        </div>
+        <div class="promise-details">
+          <p>${client.desc}</p>
+        </div>
+      `;
+      div.querySelector('.promise-header').onclick = () =>
+        div.classList.toggle('show');
+      todayContainer.appendChild(div);
+    });
+  }
+
+  else {
+    const res = promises.filter(p =>
+      p.name.toLowerCase().includes(q)
+    );
+    render(res, currentTab);
+  }
 
   searchClearTimer = setTimeout(() => {
     searchInput.value = '';
-    render();
+    currentTab === 'account'
+      ? renderAccount(currentAccountId)
+      : render();
   }, 10000);
 };
-
 
 clearSearchBtn.onclick = () => {
   searchInput.value = '';
@@ -568,7 +627,7 @@ function renderAccount(accId) {
     div.innerHTML = `
       <div class="promise-header">
         <strong>${client.name}</strong>
-        <button class="delete-client" style="margin-left:8px;">❌</button>
+       <button class="delete-client">❌</button>
       </div>
       <div class="promise-details">
         <p>${client.desc}</p>
@@ -579,11 +638,12 @@ function renderAccount(accId) {
     };
     div.querySelector('.delete-client').onclick = e => {
       e.stopPropagation();
-      if (confirm('Delete this client?')) {
-        acc.clients = acc.clients.filter(c => c.id !== client.id);
-        localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
-        renderAccount(accId);
-      }
+      showConfirm('Delete this client?', () => {
+  acc.clients = acc.clients.filter(c => c.id !== client.id);
+  localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
+  renderAccount(accId);
+});
+
     };
     todayContainer.appendChild(div);
   });

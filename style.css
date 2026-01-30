@@ -371,3 +371,17 @@ button.secondary {
   color: #000;
 }
 
+.delete-client,
+.account-delete {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 1.2rem;
+  background: var(--red);
+  border: 2px solid #000;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
