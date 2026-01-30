@@ -48,7 +48,7 @@ NeonoteX offers a wide range of features that go beyond simple promise tracking:
 
 ## Use Cases
 
-NeonoteX is designed for debt collectors, financial advisors, and small businesses, but its flexible features make it useful in many scenarios:
+NeonoteX is designed for debt collectors, Managers, and small businesses, but its flexible features make it useful in many scenarios:
 
 - Tracking client promises and other tasks.
 - Organizing project tasks and deadlines.
