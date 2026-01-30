@@ -48,6 +48,10 @@ const closeModal = document.getElementById('closeModal');
 const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearch');
 const homeBtn = document.getElementById('homeBtn');
+const helpBtn = document.getElementById('helpBtn');
+const helpModal = document.getElementById('helpModal');
+const closeHelpModal = document.getElementById('closeHelpModal');
+
 const MAX_DONE = 50;
 
 
@@ -94,6 +98,14 @@ viewAccountBtn.onclick = () => {
 
 cancelAccountOptionsBtn.onclick = () => {
   accountOptionsModal.classList.add('hidden');
+};
+
+helpBtn.onclick = () => {
+  helpModal.classList.remove('hidden');
+};
+
+closeHelpModal.onclick = () => {
+  helpModal.classList.add('hidden');
 };
 
 saveClientBtn.onclick = () => {

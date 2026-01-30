@@ -15,7 +15,7 @@
   frame-ancestors 'none';
   ">
   <title>NeonoteX</title>
-  <meta name="description" content="Neonote helps debt collectors stay organized, track commitments, and never miss a client promise — all in a simple, mobile-friendly interface." />
+  <meta name="description" content="NeonoteX is a fully open-source, mobile-friendly app that helps debt collectors record client promises, organize notes, and keep track of follow-ups so nothing is forgotten." />
    <meta property="og:title" content="NeonoteX" />
    <meta property="og:description" content="Neonote helps debt collectors stay organized, track commitments, and never miss a client promise — all in a simple, mobile-friendly interface." />
    <meta property="og:type" content="website" />
@@ -63,6 +63,8 @@
 <button id="backupOpenBtn" class="floating-btn backup-btn">💾</button>
 <button id="addBtn" class="floating-btn">＋</button>
 <button id="accountsBtn" class="floating-btn accounts-btn">👤</button>
+<button id="helpBtn" class="floating-btn help-btn">❓</button>
+
 
 <div id="accountsModal" class="modal hidden">
   <div class="modal-content retro-modal accounts-modal">
@@ -103,6 +105,106 @@
     <button id="cancelAddClientBtn" class="secondary">Cancel</button>
   </div>
 </div>
+
+<div id="helpModal" class="modal hidden">
+  <div class="modal-content retro-modal help-modal">
+
+    <div class="help-header">
+      <button id="closeHelpModal" class="secondary">Close</button>
+    </div>
+
+    <div class="help-scroll">
+
+      <h2>📘 NeonoteX User Guide</h2>
+
+      <p>
+        NeonoteX is an offline-first productivity app designed for tracking
+        client promises, follow-ups, and accounts without missing anything.
+        This guide explains every feature and how to use it step-by-step.
+      </p>
+
+      <h3>🏠 Home Button (🏠)</h3>
+      <p>
+        The Home button reloads the app instantly.  
+        Use this if the UI feels stuck or after heavy changes.
+      </p>
+
+      <h3>➕ Add Promise Button (＋)</h3>
+      <p>
+        Tap this to create a new client promise.
+      </p>
+      <ul>
+        <li><b>Client Name</b> – Who made the promise</li>
+        <li><b>Date</b> – When the promise is due</li>
+        <li><b>Description</b> – Notes or reasons</li>
+      </ul>
+
+      <h3>💾 Backup Button</h3>
+      <p>
+        Used to export or restore encrypted backups.
+      </p>
+      <ul>
+        <li>Export creates a password-protected file</li>
+        <li>Restore requires the same password</li>
+        <li>All data stays offline and secure</li>
+      </ul>
+
+      <h3>👤 Accounts Button</h3>
+      <p>
+        Accounts allow you to group multiple clients.
+      </p>
+      <ul>
+        <li>Create accounts (max 10 characters)</li>
+        <li>Add clients inside each account</li>
+        <li>View accounts as temporary tabs</li>
+        <li>Delete accounts or individual clients</li>
+      </ul>
+
+      <h3>📅 Tabs (Today / All / Done)</h3>
+      <ul>
+        <li><b>Today</b> – Promises due today</li>
+        <li><b>All</b> – All active promises</li>
+        <li><b>Done</b> – Completed or expired promises</li>
+      </ul>
+
+      <h3>☑️ Marking Promises as Done</h3>
+      <p>
+        Tap the ❌ checkbox beside a promise to mark it as completed.
+        Old completed promises are auto-limited to save storage.
+      </p>
+
+      <h3>🔁 Move Promise</h3>
+      <p>
+        Use “Move Promise” to reschedule or edit an existing promise.
+      </p>
+
+      <h3>🔍 Search Bar</h3>
+      <p>
+        Search works across promises and account clients.
+        Clears automatically after 10 seconds.
+      </p>
+
+      <h3>📲 Install App Banner</h3>
+      <p>
+        Install NeonoteX as a PWA for full-screen offline use.
+      </p>
+
+      <h3>🔐 Security & Privacy</h3>
+      <ul>
+        <li>No internet required</li>
+        <li>No tracking</li>
+        <li>All data stored locally</li>
+        <li>Backups are AES-256 encrypted</li>
+      </ul>
+
+      <button onclick="window.open('https://github.com/Neonotex/neonotex.github.io', '_blank')">
+        📦 Source Code
+      </button>
+
+    </div>
+  </div>
+</div>
+
 
   <div id="promiseModal" class="modal hidden">
     <div class="modal-content">
