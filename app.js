@@ -167,7 +167,6 @@ biometricToggle.onchange = async () => {
   }
 };
 
-
 passwordToggle.onchange = () => {
   if (passwordToggle.checked) {
     settingsModal.classList.add('hidden');
@@ -755,29 +754,24 @@ biometricBtn.onclick = async () => {
 
   try {
     const storedId = localStorage.getItem('neonote_biometric_id');
-if (!storedId) throw new Error('No biometric credential');
+    if (!storedId) throw new Error('No biometric credential');
 
-const id = Uint8Array.from(
-  atob(storedId),
-  c => c.charCodeAt(0)
-);
+    const id = Uint8Array.from(atob(storedId), c => c.charCodeAt(0));
 
-await navigator.credentials.get({
-  publicKey: {
-    challenge: crypto.getRandomValues(new Uint8Array(32)),
-    allowCredentials: [{
-      id,
-      type: 'public-key'
-    }],
-    userVerification: 'required',
-    timeout: 60000
-  }
-});
+    await navigator.credentials.get({
+      publicKey: {
+        challenge: crypto.getRandomValues(new Uint8Array(32)),
+        allowCredentials: [{ id, type: 'public-key' }],
+        userVerification: 'required',
+        timeout: 60000
+      }
+    });
 
     appLockModal.classList.add('hidden');
     appPasswordInput.value = '';
 
   } catch (err) {
+    console.error(err);
     alert('Biometric authentication failed');
   }
 };
@@ -875,21 +869,15 @@ let hidden = false;
 hideBtn.onclick = () => {
   hidden = !hidden;
 
-  const floatingButtons = document.querySelectorAll('.floating-btn:not(.hide-btn)');
+  const floatingButtons = document.querySelectorAll('.floating-btn');
+  floatingButtons.forEach(btn => {
+    if (btn.id !== 'hideBtn') {
+      btn.style.display = hidden ? 'none' : 'block';
+    }
+  });
 
-  if (hidden) {
-    floatingButtons.forEach(btn => btn.classList.add('slide-out'));
-
-    hideBtn.classList.add('slide-right');
-    hideBtn.classList.remove('slide-left');
-    hideBtn.textContent = '❮'; 
-  } else {
-
-    floatingButtons.forEach(btn => btn.classList.remove('slide-out'));
-    hideBtn.classList.add('slide-left');
-    hideBtn.classList.remove('slide-right');
-    hideBtn.textContent = '❯'; 
-  }
+  hideBtn.style.transform = hidden ? 'translateX(-50%)' : 'translateX(0)';
+  hideBtn.textContent = hidden ? '❮' : '❯';
 };
 
 
