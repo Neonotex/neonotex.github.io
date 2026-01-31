@@ -87,6 +87,11 @@ const editClientNameInput = document.getElementById('editClientNameInput');
 const editClientDescInput = document.getElementById('editClientDescInput');
 const saveEditClientBtn = document.getElementById('saveEditClientBtn');
 const cancelEditClientBtn = document.getElementById('cancelEditClientBtn');
+const passwordModal = document.getElementById('passwordModal');
+const passwordInput = document.getElementById('passwordInput');
+const passwordConfirmBtn = document.getElementById('passwordConfirmBtn');
+const passwordCancelBtn = document.getElementById('passwordCancelBtn');
+const passwordModalTitle = document.getElementById('passwordModalTitle');
 
 let editingClientId = null;
 
@@ -112,7 +117,7 @@ cancelEditClientBtn.onclick = () => {
   editClientModal.classList.add('hidden');
 };
 
-
+if (editAccountBtn) {
 editAccountBtn.onclick = () => {
   const acc = accounts.find(a => a.id === currentAccountId);
   if (!acc) return;
@@ -121,6 +126,7 @@ editAccountBtn.onclick = () => {
   accountOptionsModal.classList.add('hidden');
   editAccountModal.classList.remove('hidden');
 };
+}
 
 saveEditAccountBtn.onclick = () => {
   const newName = editAccountNameInput.value.trim();
@@ -502,11 +508,6 @@ closeBackupModal.onclick = () => {
 };
 
 
-const passwordModal = document.getElementById('passwordModal');
-const passwordInput = document.getElementById('passwordInput');
-const passwordConfirmBtn = document.getElementById('passwordConfirmBtn');
-const passwordCancelBtn = document.getElementById('passwordCancelBtn');
-const passwordModalTitle = document.getElementById('passwordModalTitle');
 
 let backupAction = null; 
 let backupFile = null;
