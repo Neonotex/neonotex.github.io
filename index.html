@@ -137,6 +137,74 @@
         The Home button reloads the app instantly.  
         Use this if the UI feels stuck or after heavy changes.
       </p>
+      <p>It will also lock the app when click if the password is enabled.</p>
+      
+      <section id="settings-guide">
+  <h2>App Settings & Password Protection Guide</h2>
+
+  <h3>1.⚙️ Purpose of the Settings(⚙️)</h3>
+  <p>
+    The <strong>Settings</strong> button allows you to manage security and privacy features of the app.
+    Inside Settings, you can enable or disable the app password feature. This ensures that only authorized
+    users can access your promises, accounts, and clients.
+  </p>
+
+  <h3>2. Why Enable Password?</h3>
+  <ul>
+    <li><strong>Protect your data:</strong> Your promises, accounts, and client information are stored locally. Enabling a password ensures no one else can access them without your permission.</li>
+    <li><strong>Secure sensitive information:</strong> If your app contains confidential client details, the password keeps them safe.</li>
+
+  </ul>
+
+  <h3>3. What Happens When You Enable Password</h3>
+  <ol>
+    <li>
+      When you toggle <strong>Enable Password</strong> in Settings:
+      <ul>
+        <li>The app prompts you to create a new password.</li>
+        <li>You enter and confirm your password.</li>
+        <li>The password is securely stored in local storage under <code>neonote_app_password</code>.</li>
+        <li>The app will now require this password to unlock the app whenever it is opened or refreshed.</li>
+      </ul>
+    </li>
+    <li>
+      If you disable the password:
+      <ul>
+        <li>The stored password is removed from local storage.</li>
+        <li>All security prompts on app startup are turned off.</li>
+      </ul>
+    </li>
+    <li>
+      On app startup, if password protection is enabled:
+      <ul>
+        <li>An <strong>App Lock</strong> modal will appear, asking you to enter your password.</li>
+
+      </ul>
+    </li>
+  </ol>
+
+  <h3>4. Important Notes</h3>
+  <ul>
+    <li>Once a password is set, you must remember it. If you forget your password, you may lose access to your app data until you reset the app.</li>
+    <li>The password protects local app data only. Backups are encrypted separately with a password when exported.</li>
+    <li>For additional security, consider exporting encrypted backups regularly.</li>
+  </ul>
+
+  <h3>5. How Backup & Password Work Together</h3>
+  <p>
+    When exporting a backup, you are prompted to enter a <strong>backup password</strong>. This password encrypts your backup
+    file using AES-GCM encryption. When importing, the same password must be provided to decrypt the file.
+  </p>
+  <p>
+    This ensures that even if your backup file is shared, it cannot be opened without the correct password.
+  </p>
+
+  <h3>6. Summary</h3>
+  <p>
+    Enabling the app password provides a layer of security to protect your promises, accounts, and client information. It also allows the use of biometrics for easier access. Disabling the password removes these protections.
+  </p>
+</section>
+
 
 <h3>➕ Add Promise Button (＋)</h3>
 <p>
