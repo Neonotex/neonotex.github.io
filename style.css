@@ -542,7 +542,7 @@ button.secondary {
 .slider {
   position: absolute;
   inset: 0;
-  background: #660000;
+  background: #red;
   border-radius: 4px;
   cursor: pointer;
 }

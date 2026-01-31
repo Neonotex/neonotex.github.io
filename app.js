@@ -90,18 +90,6 @@ let isMoving = false;
 let accounts = JSON.parse(localStorage.getItem('neonote_accounts') || '[]');
 let currentAccountId = null;
 
-function updateTabCounts() {
-  const todayCountEl = document.getElementById('todayCount');
-  const allCountEl = document.getElementById('allCount');
-
-  const todayCount = promises.filter(p => p.date === today() && !p.done).length;
-  const allCount = promises.filter(p => !p.done).length;
-
-  todayCountEl.textContent = `[${todayCount}]`;
-  allCountEl.textContent = `[${allCount}]`;
-}
-
-
 function markOverduePromisesDone() {
   const todayStr = today();
   let changed = false;
@@ -233,40 +221,92 @@ async function getKey(password, salt) {
   );
 }
 
-
 function render(list = promises, mode = currentTab) {
-  updateTabCounts(); 
-
   todayContainer.innerHTML = '';
+
   let items = [];
 
   if (mode === 'today') {
     items = list.filter(p => p.date === today() && !p.done);
-  } else if (mode === 'all') {
+  }
+
+  if (mode === 'all') {
     items = list.filter(p => !p.done);
-  } else if (mode === 'account') {
-    return; 
+  }
+
+  if (mode === 'done') {
+    items = list.filter(p => p.done);
   }
 
   if (!items.length) {
     todayContainer.innerHTML =
-      '<p class="empty-state">Wala kay promise karon Dong! Pag trabaho intawon!</p>';
+  '<p class="empty-state">Wala kay promise karon Dong! Pag trabaho intawon!</p>';
     return;
   }
 
   items.forEach(p => {
     const div = document.createElement('div');
     div.className = 'promise';
+    if (p.done) div.classList.add('done-visible');
+
     div.innerHTML = `
-      <div class="promise-header"><strong>${p.name}</strong></div>
+      <div class="promise-header">
+        <strong>${p.name}</strong>
+        ${
+          mode === 'today'
+            ? '<div class="checkbox"></div>'
+            : ''
+        }
+      </div>
       <div class="promise-details">
         <p>Date: ${p.date}</p>
         <p>${p.desc}</p>
+        ${
+          !p.done && mode !== 'done'
+            ? '<button class="move">Move Promise</button>'
+            : ''
+        }
       </div>
     `;
+
+    if (mode === 'today') {
+      div.querySelector('.checkbox').onclick = e => {
+  e.stopPropagation();
+
+  showConfirm(`Mark promise "${p.name}" as Done?`, () => {
+    p.done = true;
+
+    const idx = promises.indexOf(p);
+    if (idx > -1) {
+      promises.splice(idx, 1);
+      promises.push(p); 
+    }
+
+    enforceDoneLimit();
+    save();
+    render();
+  });
+  };
+  }
+
+    div.querySelector('.promise-header').onclick = () => {
+      div.classList.toggle('show');
+    };
+
+    const moveBtn = div.querySelector('.move');
+    if (moveBtn) {
+      moveBtn.onclick = e => {
+        e.stopPropagation();
+        editIndex = promises.indexOf(p);
+        isMoving = true;
+        openModal(p);
+      };
+    }
+
     todayContainer.appendChild(div);
   });
 }
+
 
 function openModal(p = {}) {
   modal.classList.remove('hidden');
@@ -733,41 +773,6 @@ function renderAccount(accId) {
     };
     todayContainer.appendChild(div);
   });
-}
-
-
-function showTemporaryAccountTab(accountId) {
-  currentAccountId = accountId;
-  const acc = accounts.find(a => a.id === accountId);
-  if (!acc) return;
-
-  const existingTab = document.querySelector('.tab[data-tab="account"]');
-  if (existingTab) existingTab.remove();
-
-  const tabContainer = document.querySelector('.tabs');
-  const accTab = document.createElement('button');
-  accTab.className = 'tab active';
-  accTab.dataset.tab = 'account';
-  accTab.textContent = `${acc.name} [${acc.clients.length}]`;
-
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  tabContainer.appendChild(accTab);
-  currentTab = 'account';
-
-  todayContainer.innerHTML = '';
-  acc.clients.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'promise';
-    div.innerHTML = `<strong>${c.name}</strong><p>${c.desc}</p>`;
-    todayContainer.appendChild(div);
-  });
-
-  accTab.onclick = () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    accTab.classList.add('active');
-    currentTab = 'account';
-    showTemporaryAccountTab(accountId);
-  };
 }
 
 
