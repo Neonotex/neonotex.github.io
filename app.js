@@ -21,6 +21,10 @@ if (sourceCodeBtn) {
 
 
 const todayContainer = document.getElementById('todayContainer');
+const countTodayEl = document.getElementById('countToday');
+const countAllEl = document.getElementById('countAll');
+const countAccountEl = document.getElementById('countAccount');
+
 const modal = document.getElementById('promiseModal');
 const addBtn = document.getElementById('addBtn');
 const backupModal = document.getElementById('backupModal');
@@ -149,6 +153,8 @@ addClientBtn.onclick = () => {
 viewAccountBtn.onclick = () => {
   accountOptionsModal.classList.add('hidden');
   showTemporaryAccountTab(currentAccountId);
+  updateCounts();
+
 };
 
 cancelAccountOptionsBtn.onclick = () => {
@@ -181,6 +187,8 @@ saveClientBtn.onclick = () => {
   localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
   addClientModal.classList.add('hidden');
   showTemporaryAccountTab(currentAccountId);
+  updateCounts();
+
 };
 
 cancelAddClientBtn.onclick = () => {
@@ -195,6 +203,27 @@ function today() {
   const day = String(d.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
+function updateCounts() {
+  const todayCount = promises.filter(
+    p => p.date === today() && !p.done
+  ).length;
+
+  const allCount = promises.filter(p => !p.done).length;
+
+  let accountCount = 0;
+  if (currentAccountId) {
+    const acc = accounts.find(a => a.id === currentAccountId);
+    if (acc && acc.clients) {
+      accountCount = acc.clients.length;
+    }
+  }
+
+  if (countTodayEl) countTodayEl.textContent = `Today [${todayCount}]`;
+  if (countAllEl) countAllEl.textContent = `All [${allCount}]`;
+  if (countAccountEl) countAccountEl.textContent = `Account [${accountCount}]`;
+}
+
 
 async function getKey(password, salt) {
   const enc = new TextEncoder();
@@ -305,6 +334,7 @@ function render(list = promises, mode = currentTab) {
 
     todayContainer.appendChild(div);
   });
+    updateCounts();
 }
 
 
@@ -488,6 +518,8 @@ localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
 
 markOverduePromisesDone();
 render();
+updateCounts();
+
 backupModal.classList.add('hidden');
 showNotification('Backup restored successfully');
 
