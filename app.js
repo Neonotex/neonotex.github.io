@@ -77,79 +77,7 @@ const biometricBtn = document.getElementById('biometricBtn');
 const APP_PASSWORD_KEY = 'neonote_app_password';
 const PASSWORD_ENABLED_KEY = 'neonote_password_enabled';
 const BIOMETRIC_ENABLED_KEY = 'neonote_biometric_enabled';
-const editAccountBtn = document.getElementById('editAccountBtn');
-const editAccountModal = document.getElementById('editAccountModal');
-const editAccountNameInput = document.getElementById('editAccountNameInput');
-const saveEditAccountBtn = document.getElementById('saveEditAccountBtn');
-const cancelEditAccountBtn = document.getElementById('cancelEditAccountBtn');
-const editClientModal = document.getElementById('editClientModal');
-const editClientNameInput = document.getElementById('editClientNameInput');
-const editClientDescInput = document.getElementById('editClientDescInput');
-const saveEditClientBtn = document.getElementById('saveEditClientBtn');
-const cancelEditClientBtn = document.getElementById('cancelEditClientBtn');
-const passwordModal = document.getElementById('passwordModal');
-const passwordInput = document.getElementById('passwordInput');
-const passwordConfirmBtn = document.getElementById('passwordConfirmBtn');
-const passwordCancelBtn = document.getElementById('passwordCancelBtn');
-const passwordModalTitle = document.getElementById('passwordModalTitle');
 
-let editingClientId = null;
-
-
-saveEditClientBtn.onclick = () => {
-  const acc = accounts.find(a => a.id === currentAccountId);
-  if (!acc) return;
-
-  const client = acc.clients.find(c => c.id === editingClientId);
-  if (!client) return;
-
-  client.name = editClientNameInput.value.trim();
-  client.desc = editClientDescInput.value.trim();
-
-  localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
-
-  editClientModal.classList.add('hidden');
-  showTemporaryAccountTab(currentAccountId);
-  updateCounts();
-};
-
-cancelEditClientBtn.onclick = () => {
-  editClientModal.classList.add('hidden');
-};
-
-if (editAccountBtn) {
-editAccountBtn.onclick = () => {
-  const acc = accounts.find(a => a.id === currentAccountId);
-  if (!acc) return;
-
-  editAccountNameInput.value = acc.name;
-  accountOptionsModal.classList.add('hidden');
-  editAccountModal.classList.remove('hidden');
-};
-}
-
-saveEditAccountBtn.onclick = () => {
-  const newName = editAccountNameInput.value.trim();
-  if (!newName || newName.length > 10) {
-    alert('Account name required (max 10 chars)');
-    return;
-  }
-
-  const acc = accounts.find(a => a.id === currentAccountId);
-  if (!acc) return;
-
-  acc.name = newName;
-  localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
-
-  editAccountModal.classList.add('hidden');
-  renderAccountsList();
-  showTemporaryAccountTab(currentAccountId);
-  updateCounts();
-};
-
-cancelEditAccountBtn.onclick = () => {
-  editAccountModal.classList.add('hidden');
-};
 
 
 let searchClearTimer = null;
@@ -508,6 +436,11 @@ closeBackupModal.onclick = () => {
 };
 
 
+const passwordModal = document.getElementById('passwordModal');
+const passwordInput = document.getElementById('passwordInput');
+const passwordConfirmBtn = document.getElementById('passwordConfirmBtn');
+const passwordCancelBtn = document.getElementById('passwordCancelBtn');
+const passwordModalTitle = document.getElementById('passwordModalTitle');
 
 let backupAction = null; 
 let backupFile = null;
@@ -850,33 +783,17 @@ function renderAccount(accId) {
     const div = document.createElement('div');
     div.className = 'promise';
     div.innerHTML = `
-  <div class="promise-header">
-    <strong>${client.name}</strong>
-
-    <div class="client-actions">
-      <button class="edit-client" data-id="${client.id}">✏️</button>
-      <button class="delete-client">❌</button>
-    </div>
-  </div>
-
-  <div class="promise-details">
-    <p>${client.desc}</p>
-  </div>
-`;
-
+      <div class="promise-header">
+        <strong>${client.name}</strong>
+       <button class="delete-client">❌</button>
+      </div>
+      <div class="promise-details">
+        <p>${client.desc}</p>
+      </div>
+    `;
     div.querySelector('.promise-header').onclick = () => {
       div.classList.toggle('show');
     };
-    div.querySelector('.edit-client').onclick = e => {
-  e.stopPropagation();
-
-  editingClientId = client.id;
-  editClientNameInput.value = client.name;
-  editClientDescInput.value = client.desc || '';
-
-  editClientModal.classList.remove('hidden');
-};
-
     div.querySelector('.delete-client').onclick = e => {
       e.stopPropagation();
       showConfirm('Delete this client?', () => {
