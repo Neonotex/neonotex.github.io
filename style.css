@@ -627,10 +627,9 @@ button.secondary {
   color: var(--green);
 }
 
-.all-header,
 .all-row {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 8px;
   align-items: center;
 }
@@ -656,4 +655,10 @@ button.secondary {
 
 .hidden {
   display: none !important;
+}
+
+.promise-header.all-row {
+  display: grid; 
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
 }
