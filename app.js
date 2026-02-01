@@ -791,6 +791,7 @@ function showTemporaryAccountTab(accId) {
 }
 
 function renderAccount(accId) {
+  document.getElementById('allStickyHeader').classList.add('hidden');
   todayContainer.innerHTML = '';
   const acc = accounts.find(a => a.id === accId);
   if (!acc || !acc.clients.length) {
