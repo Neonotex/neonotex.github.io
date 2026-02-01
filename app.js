@@ -193,11 +193,15 @@ saveClientBtn.onclick = () => {
     desc
   });
 
+
   localStorage.setItem('neonote_accounts', JSON.stringify(accounts));
-  addClientModal.classList.add('hidden');
+
+  clientNameInput.value = '';
+  clientDescInput.value = '';
+
   showTemporaryAccountTab(currentAccountId);
   updateCounts();
-
+  clientNameInput.focus();
 };
 
 cancelAddClientBtn.onclick = () => {
