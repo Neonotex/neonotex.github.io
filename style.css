@@ -619,13 +619,32 @@ button.secondary {
 
 .all-header {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  padding: 6px 8px;
+  grid-template-columns: 1.8fr 1.2fr; 
+  gap: 8px;
   margin-bottom: 6px;
-  font-weight: bold;
-  border-bottom: 2px dashed var(--green);
-  color: var(--green);
 }
+
+.all-header > div:first-child {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #123d37;  
+  color: #a1e5dc;
+  font-weight: bold;
+  text-align: center;
+}
+
+.all-header > div:last-child {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: gold;   
+  color: #000;
+  font-weight: bold;
+  text-align: center;         
+  white-space: nowrap;
+}
+
 
 .all-row {
   display: flex;
@@ -701,3 +720,4 @@ button.secondary {
   border: 2px solid #000;   
   box-sizing: border-box;
 }
+
