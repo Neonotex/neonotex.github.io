@@ -260,8 +260,11 @@ function render(list = promises, mode = currentTab) {
   }
 
   if (mode === 'all') {
-    items = list.filter(p => !p.done);
-  }
+  items = list
+    .filter(p => !p.done)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
 
   if (mode === 'done') {
     items = list.filter(p => p.done);
@@ -279,14 +282,22 @@ function render(list = promises, mode = currentTab) {
     if (p.done) div.classList.add('done-visible');
 
     div.innerHTML = `
-      <div class="promise-header">
-        <strong>${p.name}</strong>
-        ${
-          mode === 'today'
-            ? '<div class="checkbox"></div>'
-            : ''
-        }
-      </div>
+<div class="promise-header">
+  <strong>
+    ${p.name}
+    ${
+      mode === 'all'
+        ? ` <span class="ptp-date">[PTP: ${p.date}]</span>`
+        : ''
+    }
+  </strong>
+  ${
+    mode === 'today'
+      ? '<div class="checkbox"></div>'
+      : ''
+  }
+</div>
+
       <div class="promise-details">
         <p>Date: ${p.date}</p>
         <p>${p.desc}</p>

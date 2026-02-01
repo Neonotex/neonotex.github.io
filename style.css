@@ -607,3 +607,9 @@ button.secondary {
   z-index: 99999;
 }
 
+.ptp-date {
+  color: #ffd966;
+  font-size: 0.85em;
+  margin-left: 6px;
+}
+
