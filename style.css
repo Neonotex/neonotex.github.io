@@ -619,7 +619,7 @@ button.secondary {
 
 .all-header {
   display: grid;
-  grid-template-columns: 1.9fr 1.1fr; 
+  grid-template-columns: 2fr 1fr; 
   gap: 8px;
   margin-bottom: 6px;
 }
@@ -681,7 +681,7 @@ button.secondary {
 
 .promise-header.all-row {
   display: grid; 
-  grid-template-columns: 1.9fr 1.1fr;
+  grid-template-columns: 2fr 1fr;
   align-items: center
   gap: 8px
 }
@@ -747,4 +747,14 @@ button.secondary {
 .name-suggestions.hidden {
   display: none;
 }
+
+.all-date-box {
+  font-size: 0.7rem;   
+}
+@media (max-width: 480px) {
+  .all-date-box {
+    font-size: 0.6rem;
+  }
+}
+
 
