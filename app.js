@@ -77,6 +77,8 @@ const biometricBtn = document.getElementById('biometricBtn');
 const APP_PASSWORD_KEY = 'neonote_app_password';
 const PASSWORD_ENABLED_KEY = 'neonote_password_enabled';
 const BIOMETRIC_ENABLED_KEY = 'neonote_biometric_enabled';
+const NAME_HISTORY_KEY = 'neonote_name_history';
+const nameSuggestions = document.getElementById('nameSuggestions');
 
 
 
@@ -86,6 +88,10 @@ let currentTab = 'today';
 const clientName = document.getElementById('clientName');
 const promiseDate = document.getElementById('promiseDate');
 const description = document.getElementById('description');
+
+clientName.addEventListener('input', () => {
+  showNameSuggestions(clientName.value.trim());
+});
 
 
 let editIndex = null;
@@ -373,6 +379,53 @@ function save() {
   localStorage.setItem('neonote_promises', JSON.stringify(promises));
 }
 
+function getNameHistory() {
+  return JSON.parse(localStorage.getItem(NAME_HISTORY_KEY) || '[]');
+}
+
+function saveNameToHistory(name) {
+  if (!name) return;
+
+  let history = getNameHistory();
+
+  if (!history.includes(name)) {
+    history.push(name);
+    localStorage.setItem(NAME_HISTORY_KEY, JSON.stringify(history));
+  }
+}
+
+function showNameSuggestions(query) {
+  const history = getNameHistory();
+  nameSuggestions.innerHTML = '';
+
+  if (!query) {
+    nameSuggestions.classList.add('hidden');
+    return;
+  }
+
+  const matches = history.filter(n =>
+    n.toLowerCase().includes(query.toLowerCase())
+  );
+
+  if (!matches.length) {
+    nameSuggestions.classList.add('hidden');
+    return;
+  }
+
+  matches.forEach(name => {
+    const div = document.createElement('div');
+    div.textContent = name;
+    div.onclick = () => {
+      clientName.value = name;
+      nameSuggestions.classList.add('hidden');
+    };
+    nameSuggestions.appendChild(div);
+  });
+
+  nameSuggestions.classList.remove('hidden');
+}
+
+
 addBtn.onclick = () => openModal();
 closeModal.onclick = close;
 
@@ -498,7 +551,8 @@ passwordConfirmBtn.onclick = async () => {
       version: 1,
       created: Date.now(),
       promises,
-      accounts
+      accounts,
+      nameHistory: getNameHistory()
     });
 
     const encrypted = await crypto.subtle.encrypt(
@@ -532,6 +586,10 @@ passwordConfirmBtn.onclick = async () => {
       const parsed = JSON.parse(new TextDecoder().decode(decrypted));
 promises = parsed.promises || [];
 accounts = parsed.accounts || [];
+if (parsed.nameHistory) {
+  localStorage.setItem(NAME_HISTORY_KEY, JSON.stringify(parsed.nameHistory)); 
+}
+
 save();  
 localStorage.setItem('neonote_accounts', JSON.stringify(accounts)); 
 
@@ -606,7 +664,7 @@ saveBtn.onclick = () => {
   };
 
   if (!p.name) return;
-
+    saveNameToHistory(p.name); 
   if (editIndex !== null) {
     promises[editIndex] = p;
   } else {

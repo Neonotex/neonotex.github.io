@@ -725,3 +725,26 @@ button.secondary {
   box-sizing: border-box;
 }
 
+.name-suggestions {
+  background: #000;
+  border: 2px solid var(--green);
+  margin-bottom: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.name-suggestions div {
+  padding: 6px 8px;
+  cursor: pointer;
+  border-bottom: 1px dashed var(--red);
+}
+
+.name-suggestions div:hover {
+  background: var(--green);
+  color: #000;
+}
+
+.name-suggestions.hidden {
+  display: none;
+}
+
