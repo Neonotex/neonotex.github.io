@@ -338,9 +338,13 @@ if (mode === 'all') {
   };
   }
 
-    div.querySelector('.promise-header').onclick = () => {
-      div.classList.toggle('show');
-    };
+    const header = div.querySelector('.promise-header');
+if (header) {
+  header.onclick = () => {
+    div.classList.toggle('show');
+  };
+}
+
 
     const moveBtn = div.querySelector('.move');
     if (moveBtn) {
