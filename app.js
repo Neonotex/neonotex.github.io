@@ -1524,7 +1524,9 @@ function updateTabCounts() {
 
   collectionData.forEach(r => {
     const last = new Date(r.lastPaid);
-    const months = (now.getFullYear() - last.getFullYear())*12 + (now.getMonth()-last.getMonth());
+    const months =
+      (now.getFullYear() - last.getFullYear()) * 12 +
+      (now.getMonth() - last.getMonth());
 
     if (months >= 12) counts['12NM']++;
     else if (months >= 9) counts['9NM']++;
@@ -1532,15 +1534,30 @@ function updateTabCounts() {
     else if (months >= 3) counts['3NM']++;
     else counts['Moving']++;
   });
-
   counts['Total'] = collectionData.length;
 
-  document.getElementById('count3NM').textContent = counts['3NM'];
-  document.getElementById('count6NM').textContent = counts['6NM'];
-  document.getElementById('count9NM').textContent = counts['9NM'];
-  document.getElementById('count12NM').textContent = counts['12NM'];
-  document.getElementById('countMoving').textContent = counts['Moving'];
-  document.getElementById('countTotal').textContent = counts['Total'];
+  const total = counts['Total'] || 1;
+  function percent(val) {
+    return Math.round((val / total) * 100);
+  }
+
+  setCountWithPercent('count3NM', counts['3NM'], percent(counts['3NM']));
+  setCountWithPercent('count6NM', counts['6NM'], percent(counts['6NM']));
+  setCountWithPercent('count9NM', counts['9NM'], percent(counts['9NM']));
+  setCountWithPercent('count12NM', counts['12NM'], percent(counts['12NM']));
+  setCountWithPercent('countMoving', counts['Moving'], percent(counts['Moving']));
+  setCountWithPercent('countTotal', counts['Total'], 100);
+}
+function setCountWithPercent(elId, count, pct) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+
+  el.innerHTML = `
+    <div class="tab-metric">
+      <div class="tab-percent">${pct}%</div>
+      <div class="tab-count">${count}</div>
+    </div>
+  `;
 }
 
 function getMonthBucket(record) {

@@ -963,8 +963,8 @@ button.collectionbtn {
 }
 
 .collection-names-list {
-  height: 270px;
-  max-height: 270px;
+  height: 260px;
+  max-height: 260px;
   flex: none;
   overflow-y: auto;
   border-top: 5px solid var(--green);
@@ -1064,3 +1064,30 @@ button.collectionbtn {
   cursor: pointer;
 }
 
+.tab-percent {
+  font-size: 0.75em;
+  color: #6fffe9; 
+  font-weight: bold;
+}
+
+.tab-count {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--light);
+}
+
+.tab-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1.1;
+}
