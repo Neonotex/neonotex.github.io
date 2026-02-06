@@ -963,8 +963,8 @@ button.collectionbtn {
 }
 
 .collection-names-list {
-  height: 245px;
-  max-height: 245px;
+  height: 220px;
+  max-height: 220px;
   flex: none;
   overflow-y: auto;
   border-top: 5px solid var(--green);
@@ -1004,25 +1004,32 @@ button.collectionbtn {
   pointer-events: none;
 }
 
-#addCollectionPayment {
+.payment-buttons {
+  display: flex;
+  flex-direction: column; 
+  gap: 6px; 
+  margin-top: 4px;
+}
+
+.collection-btn {
+  background: var(--green);  
+  color: #000;            
+  border: none;
   padding: 6px 10px;
-  margin-left: 6px;
-  background: var(--green);
-  color: #000;
-  border: 2px solid #000;
-  border-radius: 6px;     
-  font-size: 0.9rem;
+  border-radius: 5px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  white-space: nowrap;
-  box-shadow: 0 0 0 1px #000;  
-  transition: transform 0.1s ease, background 0.1s ease;
+  transition: transform 0.1s ease;
 }
-#addCollectionPayment:hover {
-  background: #3bbfa5; 
-}
-#addCollectionPayment:active {
+
+.collection-btn:active {
   transform: scale(1.08);
+}
+
+.update-btn {
+  color: var(--red);
+  background: var(--bg);
 }
 
 #copyCollectionBtn {
@@ -1048,13 +1055,37 @@ button.collectionbtn {
 
 
 .collection-header {
-  position: absolute;
-  top: 10px;
-  right: 15px;
   display: flex;
-  gap: 8px;
-  z-index: 3000;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 3px solid var(--green);
+  background: #000;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
+
+.collection-title {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--green);
+  text-shadow: 1px 1px 0 #000;
+}
+
+.collection-header-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.collection-header button {
+  padding: 6px 10px;
+  font-size: 1rem;
+  background: var(--green);
+  border: 2px solid #000;
+  cursor: pointer;
+}
+
 
 #copyCollectionBtn,
 #closeCollectionModal {

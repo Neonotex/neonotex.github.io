@@ -1,42 +1,14 @@
-const CACHE = 'neonote-v352';
-
-const ASSETS = [
-  './',
-  './index.html',
-  './style.css',
-  './app.js',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
-];
-
+const CACHE = 'neonote-v367';
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE).then(async cache => {
-
-      const requests = ASSETS.map(url =>
-        new Request(url, { cache: 'reload' })
-      );
-      await cache.addAll(requests);
-    })
-  );
+  
 });
 
-
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-
-  if (event.request.headers.get('accept')?.includes('text/html')) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
+  if (
+    event.request.method !== 'GET' ||
+    !event.request.url.startsWith(self.location.origin)
+  ) {
     return;
   }
 
@@ -47,22 +19,33 @@ self.addEventListener('fetch', event => {
   );
 });
 
-
 self.addEventListener('message', event => {
-  if (event.data?.action === 'SKIP_WAITING') {
+  if (event.data?.action === 'APPLY_UPDATE') {
+    event.waitUntil(applyLatestUpdate());
     self.skipWaiting();
-
-    event.waitUntil(
-      caches.keys().then(keys =>
-        Promise.all(
-          keys.filter(k => k !== CACHE).map(k => caches.delete(k))
-        )
-      )
-    );
   }
 });
 
+async function applyLatestUpdate() {
+  const keys = await caches.keys();
+  await Promise.all(keys.map(k => caches.delete(k)));
+
+  const cache = await caches.open(CACHE);
+
+  await cache.addAll([
+    new Request('./', { cache: 'reload' }),
+    new Request('./index.html', { cache: 'reload' }),
+    new Request('./style.css', { cache: 'reload' }),
+    new Request('./app.js', { cache: 'reload' }),
+    new Request('./manifest.json', { cache: 'reload' }),
+    new Request('./icons/icon-192.png', { cache: 'reload' }),
+    new Request('./icons/icon-512.png', { cache: 'reload' })
+  ]);
+}
 
 self.addEventListener('activate', event => {
-  
+  event.waitUntil(self.clients.claim());
 });
+
+  
+
