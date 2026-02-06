@@ -863,7 +863,7 @@ button.collectionbtn {
   transform: translate(-50%, -50%);
   width: 97%;
   max-width: 1200px;
-  height: 700px;
+  height: 650px;
   background: #1a1a1a;
   color: #f0f0f0;
   border: 2px solid var(--green);
@@ -1059,8 +1059,6 @@ button.collectionbtn {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  border-bottom: 3px solid var(--green);
-  background: #000;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -1079,7 +1077,7 @@ button.collectionbtn {
 }
 
 .collection-header button {
-  padding: 6px 10px;
+  padding: 1px 2px;
   font-size: 1rem;
   background: var(--green);
   border: 2px solid #000;
