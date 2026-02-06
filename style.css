@@ -864,7 +864,7 @@ button.collectionbtn {
   transform: translate(-50%, -50%);
   width: 97%;
   max-width: 1200px;
-  height: 650px;
+  height: 675px;
   background: #1a1a1a;
   color: #f0f0f0;
   border: 2px solid var(--green);
@@ -964,8 +964,8 @@ button.collectionbtn {
 }
 
 .collection-names-list {
-  height: 220px;
-  max-height: 220px;
+  height: 200px;
+  max-height: 200px;
   flex: none;
   overflow-y: auto;
   border-top: 5px solid var(--green);
@@ -1063,6 +1063,7 @@ button.collectionbtn {
   padding: 2px;       
   border-bottom: 2px solid var(--green);
   background: #000;
+  padding-bottom: 5px;
 }
 
 .collection-title {
