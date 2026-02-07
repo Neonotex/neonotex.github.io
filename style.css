@@ -1156,3 +1156,11 @@ button.collectionbtn {
 #saveCollectionQuota:active {
   transform: scale(1.08);
 }
+
+#collectionModal #collectionTotalBalance,
+#collectionModal #collectionRunning,
+#collectionModal #collectionTotalAcc,
+#collectionModal #collectionTotalReceivable,
+#collectionModal #collectionLastPaid {
+  border-color: var(--green);
+}
