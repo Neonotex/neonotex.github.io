@@ -1305,6 +1305,16 @@ const COLLECTION_TAB_TITLES = {
   'Moving': 'Moving Accounts',
   'Total': 'All Accounts'
 };
+const BALANCE_TAB_LABELS = {
+  '3NM': '3 month non-moving',
+  '6NM': '6 month non-moving',
+  '9NM': '9 month non-moving',
+  '12NM': '12 month non-moving',
+  'Moving': 'moving accounts',
+  'Total': 'all accounts'
+};
+
+
 let collectionNamesVisible = false;
 
 collectionBtn.onclick = () => {
@@ -1580,6 +1590,28 @@ copyCollectionBtn.onclick = async () => {
   }
 };
 
+const balanceOfBtn = document.getElementById('balanceOfBtn');
+
+balanceOfBtn.onclick = () => {
+  if (!currentCollectionTab) {
+    showNotification(
+      'Please select a tab first:\n\n' +
+      '3NM, 6NM, 9NM, 12NM, Moving, or Total'
+    );
+    return;
+  }
+
+  const total = getTotalBalanceByTab(currentCollectionTab);
+  const label =
+    BALANCE_TAB_LABELS[currentCollectionTab] || currentCollectionTab;
+
+  showNotification(
+    `This is your Total Receivable balance for ${label}.\n\n` +
+    `${total.toLocaleString()}`
+  );
+};
+
+
 
 
 function updateCollectionPercentage(month) {
@@ -1712,6 +1744,19 @@ function getMonthBucket(record) {
   if (months >= 6)  return '6NM';
   if (months >= 3)  return '3NM';
   return 'Moving';
+}
+
+function getTotalBalanceByTab(tab) {
+  if (!tab) return 0;
+
+  const records = collectionData.filter(r => {
+    if (tab === 'Total') return true;
+    return getMonthBucket(r) === tab;
+  });
+
+  return records.reduce((sum, r) => {
+    return sum + (Number(r.balance) || 0);
+  }, 0);
 }
 
 collectionNamesVisible = false;

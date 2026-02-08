@@ -1156,3 +1156,19 @@ button.collectionbtn {
 #saveCollectionQuota:active {
   transform: scale(1.08);
 }
+
+#balanceOfBtn {
+  background: var(--bg);
+  color: var(--green);
+  border: 2px solid var(--green);
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+#balanceOfBtn:active {
+  transform: scale(1.08);
+}
