@@ -3,6 +3,7 @@
 
 **Developer:** KevinDGreat  
 🌐 Official Website: https://neonotez.github.io
+
 🌐 Official App site: https://neonotex.github.io
 
 ### NeonoteX 
