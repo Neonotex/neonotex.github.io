@@ -1172,3 +1172,17 @@ button.collectionbtn {
 #balanceOfBtn:active {
   transform: scale(1.08);
 }
+
+
+#collectionModal
+#collectionTotalBalance,
+#collectionModal
+#collectionRunning,
+#collectionModal
+#collectionTotalAcc,
+#collectionModal
+#collectionTotalReceivable,
+#collectionModal
+#collectionLastPaid {
+  border: 2px solid var(--green);
+}
