@@ -1,4 +1,4 @@
-const CACHE = 'neonote-v414';
+const CACHE = 'neonote-v412';
 
 const ASSETS = [
   './',
@@ -12,26 +12,43 @@ const ASSETS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE).then(cache => {
+      return cache.addAll(ASSETS);
+    })
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.map(key => key !== CACHE_NAME && caches.delete(key))
-      )
-    )
-  );
+  event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  if (
+    event.request.method !== 'GET' ||
+    !event.request.url.startsWith(self.location.origin)
+  ) {
+    return;
+  }
 
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || new Response('Offline', { status: 503 });
+    caches.match(event.request).then(cached => {
+      return cached || fetch(event.request);
     })
   );
 });
+
+self.addEventListener('message', event => {
+  if (event.data?.action === 'APPLY_UPDATE') {
+    event.waitUntil(applyLatestUpdate());
+    self.skipWaiting();
+  }
+});
+
+async function applyLatestUpdate() {
+  const keys = await caches.keys();
+  await Promise.all(keys.map(k => caches.delete(k)));
+
+  const cache = await caches.open(CACHE);
+  await cache.addAll(ASSETS);
+}
