@@ -1,7 +1,26 @@
-const CACHE = 'neonote-v411';
+const CACHE = 'neonote-v412';
+
+const ASSETS = [
+  './',
+  './index.html',
+  './style.css',
+  './app.js',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
+];
 
 self.addEventListener('install', event => {
-  
+  event.waitUntil(
+    caches.open(CACHE).then(cache => {
+      return cache.addAll(ASSETS);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
@@ -31,21 +50,5 @@ async function applyLatestUpdate() {
   await Promise.all(keys.map(k => caches.delete(k)));
 
   const cache = await caches.open(CACHE);
-
-  await cache.addAll([
-    new Request('./', { cache: 'reload' }),
-    new Request('./index.html', { cache: 'reload' }),
-    new Request('./style.css', { cache: 'reload' }),
-    new Request('./app.js', { cache: 'reload' }),
-    new Request('./manifest.json', { cache: 'reload' }),
-    new Request('./icons/icon-192.png', { cache: 'reload' }),
-    new Request('./icons/icon-512.png', { cache: 'reload' })
-  ]);
+  await cache.addAll(ASSETS);
 }
-
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
-});
-
-  
-
